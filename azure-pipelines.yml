@@ -1,11 +1,11 @@
 trigger:
-- main
+- test
 
 resources:
 - repo: self
 
 variables:
-  imageRepo: sampleapp
+  imageRepo: webapp
   tag: '$(Build.BuildId)'
 
 stages:
@@ -37,7 +37,6 @@ stages:
   variables:
     acrsecret: aks-acrsecreate01
     acrdevurl: 'acrregistry01.azurecr.io'
-    replicaNo: 2
   jobs:
   - job: Deploy
     displayName: Deploy to AKS
