@@ -50,12 +50,11 @@ stages:
           downloadType: 'single'
           artifactName: 'manifests-aks'
           downloadPath: '$(Pipeline.Workspace)/manifests'
-
               
       - task: KubernetesManifest@0
         inputs:
           action: 'createSecret'
-          kubernetesServiceConnection: 'aks-service-connection-june'
+          kubernetesServiceConnection: 'aks-service-connection-june'  # Corrected service connection name
           namespace: 'default'
           secretType: 'dockerRegistry'
           secretName: '$(acrsecret)'
@@ -63,10 +62,11 @@ stages:
       
       - task: KubernetesManifest@0
         inputs:
-           action: 'deploy'
-           namespace: 'default'
-           manifests: |
+          action: 'deploy'
+          kubernetesServiceConnection: 'aks-service-connection-june'  # Corrected service connection name
+          namespace: 'default'
+          manifests: |
             $(Pipeline.Workspace)/manifests/deployment.yml
             $(Pipeline.Workspace)/manifests/service.yml
-           containers: '$(acrdevurl)/$(imageRepo):$(tag)'
-           imagePullSecrets: '$(acrsecret)'
+          containers: '$(acrdevurl)/$(imageRepo):$(tag)'
+          imagePullSecrets: '$(acrsecret)'
